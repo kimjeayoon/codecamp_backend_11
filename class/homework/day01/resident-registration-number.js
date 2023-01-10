@@ -41,7 +41,7 @@ function customRegistrationNumber(ssNb) {
 
 }
 
-customRegistrationNumber("222222-2222222") 
+customRegistrationNumber("012345-1234567") 
 
 
 
