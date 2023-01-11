@@ -84,3 +84,7 @@ classmates[1].school = "다람쥐초등학교"
 /*15번문제 풀이과정*/
 
 str = typeof num
+
+
+
+
