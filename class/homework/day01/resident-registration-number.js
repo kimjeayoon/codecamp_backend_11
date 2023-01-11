@@ -22,7 +22,7 @@ function lengthCheck(ssNb) {
 
 function securityNumber(ssNb) {
     return ssNb.substr(0, 8).padEnd(14, "*");   
-  }
+}
 
 
 
