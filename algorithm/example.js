@@ -85,6 +85,8 @@ classmates[1].school = "다람쥐초등학교"
 
 str = typeof num
 
+/*23번문제 풀이과정*/
+
 
 
 
