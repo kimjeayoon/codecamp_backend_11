@@ -13,7 +13,7 @@ app.get('/users', function (req, res) { //
       { email: "Nick@nick.com", name: "Nick", phone: "010-1234-5678", personal: "220219-1111111", prefer : "https:/google.com"},
       { email: "Judy@judy.com", name: "Judy", phone: "010-1234-5678", personal: "220219-3333333", prefer : "https:/naver.com"},
       { email: "Anna@anna.com", name: "Anna", phone: "010-1234-5678", personal: "220219-4444444", prefer : "https:/google.com"},
-      { email: "Elsa@elsa.com", name: "Elsa", phone: "010-1234-5678", personal: "220219-5555555", prefer : "https:/naver.com"},
+      { email: "Elsa@elsa.com", name: "Elsa", phone: "010-1234-5678", personal: "220219-5555555", prefer : "https:/naver.com"}
     ]
   
     res.send(result)
