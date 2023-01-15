@@ -2,10 +2,14 @@
 const getCoffee = () => {
   console.log('index.js 파일의 openMenu 함수 안에서 getCoffee가 실행 됨')
   // 1. 백엔드 서버로 /starbucks API 요청해 커피 데이터를 받는다.
-
   // 2. 받은 데이터로 createMenuCard 함수를 이용해 메뉴 카드를 모두 만들어주세요.
-  createMenuCard({ name: '아메리카노', kcal: 5 })
-}
+    window.axios.get('http://127.0.0.1:3000/starbucks').then((res) => {
+      const result = res.data;
+      for (let i = 0; i < result.length; i++) {
+          createMenuCard(result[i]);
+      }
+  });
+};
 
 const createMenuCard = (data) => {
   const menuCardWrapper = document.createElement('div')

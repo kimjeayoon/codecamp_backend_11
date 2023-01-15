@@ -68,6 +68,6 @@ const server = new ApolloServer({
   cors: true,
 });
 
-server.listen(4000).then(({ url }) => {
+server.listen(3000).then(({ url }) => {
   console.log(`🚀 Server ready at ${url}`);
 });
