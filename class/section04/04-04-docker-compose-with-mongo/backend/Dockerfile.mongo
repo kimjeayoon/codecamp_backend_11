@@ -1,0 +1,2 @@
+FROM mongo:5 
+#// mongo:5버전을 다운받는 명령어
