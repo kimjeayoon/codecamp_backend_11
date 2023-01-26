@@ -1,8 +1,8 @@
 import mongoose from 'mongoose'
 
 const tokenSchema = new mongoose.Schema({
-    token: String,
     phone: String,
+    token: String,
     isAuth: Boolean,
 }) 
 

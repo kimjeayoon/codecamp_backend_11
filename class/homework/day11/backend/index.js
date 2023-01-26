@@ -32,55 +32,59 @@ app.get('/users', async function (req, res) {
 
   app.post('/tokens/phone', async function (req, res) {
     const { phone } = req.body;
+    console.log("123",req.body)
     // 1. 휴대폰번호 자릿수 확인(10~11자리)
     const isValid = checkPhone(phone);
     if (isValid === false) return;
 
     // 2. 핸드폰 토큰 6자리 만들기
      const myToken = getToken();
-
+     console.log("123",myToken)
     // 3. 핸드폰 번호에 토큰 전송하기
-    sendTokenToSMS(myphone, myToken);
+    sendTokenToSMS(phone, myToken);
     
-    const phoneNum = await Certify.findOne({ phone });
+  //   const phoneNum = await Certify.findOne({ phone });
 
-  if (phoneNum === null) {
-    new Certify({ phone: phone, token: token, isAuth: false }).save();
-  } else {
-    //번호가 이미 있다면 token만 최신화해서 하나만 수정하기
-    await Certify.updateOne({ phone: phone }, { token: token });
-  }
+  // if (phoneNum === null) {
+  //   new Certify({ phone: phone, token: token, isAuth: false }).save();
+  // } else {
+  //   //번호가 이미 있다면 token만 최신화해서 하나만 수정하기
+  //   await Certify.updateOne({ phone: phone }, { token: token });
+  // }
   console.log("인증 완료")
   // 4.토큰을 입력 제대로했는지 확인하기
   // const isToken = sendToken(token);
   // if (isToken === false) return;
   const token =  new Token({
-    token: req.body.token,
+    token: myToken,
     phone: req.body.phone,
-    isAuth: req.body.isAuth
+    isAuth: false
   })
 
   console.log("인증 완료")
-
+  await token.save()
 
 
   //res.send(`${myphone}으로 인증 문자가 전송되었습니다.`);
 });
 
 app.patch("/tokens/phone", async function (req, res) {
-  let { phone, token } = req.body;
-  const receiveToken = await Certify.findOne({ phone });
+  
+  let { phone , token } = req.body;
+ const receiveToken = await Token.findOne({ token });
+ console.log(receiveToken)
   if (receiveToken === null) {
     res.send("false");
     return;
   }
 
   if (receiveToken.token === token) {
-    await Certify.updateOne({ phone: phone }, { isAuth: true });
+    console.log(phone,  req.body.phone)
+    await Token.updateOne({ phone: req.body.phone }, { isAuth: true });
     res.send("true");
     return;
   } else {
-    await Certify.updateOne({ phone: phone }, { isAuth: false });
+    await Token.updateOne({ phone: req.body.phone }, { isAuth: false });
     res.send("false");
   }
 });
