@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer';
 
 
 export function userEmail({email}) {
-    if(email.includes(" ") === undefined || email.includes("@") !== true) {
+    if(email === undefined || email.includes("@") !== true) {
         console.log("에러 발생!!! 형식이 올바르지 않습니다!!!")
         return false
     } else {

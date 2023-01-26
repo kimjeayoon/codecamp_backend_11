@@ -2,16 +2,46 @@ import { getToday } from "./utils.js"
 import nodemailer from 'nodemailer';
 
 
-export function userEmail(email) {
-    if(email.includes(" ") === undefined || email.includes("@") !== true) {
-        console.log("에러 발생!!! 형식이 올바르지 않습니다!!!")
+
+
+export function userName(name) {
+    if(name === '') {
+        console.log("이름을 입력안했습니다!!!")
         return false
     } else {
         return true
     }
 }
 
-export function welcomeUser({ name, personal, prefer, email, myphone }) {
+export function userPrefer(prefer) {
+    if(prefer === '') {
+        console.log("주소를 입력안했습니다!!!")
+     return false
+    } else {
+        return true
+    }
+}
+
+export function userEmail(email) {
+    if(email === '' || email.includes("@") !== true) {
+        console.log("형식이 올바르지 않습니다")
+        return false
+    } else {
+        return true
+    }
+}
+
+export function userPassword(pwd) {
+    if(pwd === '') {
+        console.log("비밀번호를 입력안했습니다!!!")
+        return false
+    } else {
+        return true
+    }
+}
+
+
+export function welcomeUser({ name, personal, prefer, email, myphone ,pwd}) {
     const mytemplate = `
     <html>
         <body>
@@ -20,6 +50,7 @@ export function welcomeUser({ name, personal, prefer, email, myphone }) {
                     <h1>${name}님 가입을 환영합니다</h1>
                     <hr />
                     <div>이름 : ${name}</div>
+                    <div> 이메일 : ${email}</div>
                     <div>전화번호 : ${myphone}</div>
                     <div>좋아하는 사이트 : ${prefer}</div>
                     <div style="color: red;">가입일 : ${getToday()}</div>
@@ -29,6 +60,7 @@ export function welcomeUser({ name, personal, prefer, email, myphone }) {
     </html>
  `   
     return mytemplate
+    
 }
 
 export async function sendTemplateToEmail({mytemplate, email}) {
@@ -52,5 +84,5 @@ export async function sendTemplateToEmail({mytemplate, email}) {
     })
     console.log(res)
 
-    //console.log(myEmail + "이메일로 가입환영템플릿 " + result + "를 전송합니다.")    
+    console.log(myEmail + "이메일로 가입환영템플릿 " + result + "를 전송합니다.")    
 }

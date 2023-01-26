@@ -1,0 +1,21 @@
+version: '3.7'
+
+
+services: 
+  my-express:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./index.js:/myfolder/index.js
+      - ./phone.js:/myfolder/phone.js
+      - ./signup.js:/myfolder/signup.js
+      - ./welcomeSignup.js:/myfolder/welcomeSignup.js
+    ports:
+      - 3000:3000
+
+
+  my-mongodb:
+    image: mongo:5
+    ports:
+      - 27017:27017
