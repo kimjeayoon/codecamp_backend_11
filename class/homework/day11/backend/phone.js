@@ -22,16 +22,11 @@ export function getToken() {
     return result
 }
 
-// export  function sendToken(mytoken) {
-//     if(mytoken === null || mytoken !==) {
-
-//     }
-// }
 
 export async function sendTokenToSMS(phone, token) {
-    const SMS_KEY = process.env.SMS_KEY;
-    const SMS_SECRET = process.env.SMS_SECRET;
-    const SMS_SENDER = process.env.SMS_SENDER;
+    // const SMS_KEY = process.env.SMS_KEY;
+    // const SMS_SECRET = process.env.SMS_SECRET;
+    // const SMS_SENDER = process.env.SMS_SENDER;
     
     const messageService = new mysms(process.env.SMS_KEY, process.env.SMS_SECRET)
     const res = await messageService.sendOne({

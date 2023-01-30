@@ -9,7 +9,6 @@ services:
     volumes:
       - ./index.js:/myfolder/index.js
       - ./phone.js:/myfolder/phone.js
-      - ./signup.js:/myfolder/signup.js
       - ./welcomeSignup.js:/myfolder/welcomeSignup.js
     ports:
       - 3000:3000

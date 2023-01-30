@@ -49,10 +49,9 @@ const submitSignup = async () => {
   const phone2 = document.getElementById('PhoneNumber02').value;
   const phone3 = document.getElementById('PhoneNumber03').value;
 
-  const personal = personal1 + '' + personal2
+  const personal = personal1 + '-' + personal2.replace(/[0-9]+/gi, '*******')
   const phone = phone1 + phone2 + phone3;
 
-  console.log(name, email, phone, personal, pwd, prefer);
 
   axios
       .post('http://127.0.0.1:3000/users', {

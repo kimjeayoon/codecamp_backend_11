@@ -1,5 +1,7 @@
 import { getToday } from "./utils.js"
 import nodemailer from 'nodemailer';
+import axios from 'axios'
+import cheerio from 'cheerio'
 
 
 
@@ -40,8 +42,24 @@ export function userPassword(pwd) {
     }
 }
 
+export const Prefers = async (prefer) => {
+    const url = prefer
+    const og = {};
+    const result = await axios.get(url)
+    const $ = cheerio.load(result.data)
+    
+    $("meta").each((index, el) => {
+        if($(el).attr("property") && $(el).attr("property").includes("og:")){
+            const key = $(el).attr("property") // og:title, og: description, ...
+            const value = $(el).attr("content") // 네이버, 네이버 메인에서 ~~
+            if(key.includes(key.slice(3))) og[key.slice(3)] = value
+        }
+    });
+    return og;
+}
 
-export function welcomeUser({ name, personal, prefer, email, myphone ,pwd}) {
+
+export function welcomeUser({ name, prefer, email, phone }) {
     const mytemplate = `
     <html>
         <body>
@@ -51,7 +69,7 @@ export function welcomeUser({ name, personal, prefer, email, myphone ,pwd}) {
                     <hr />
                     <div>이름 : ${name}</div>
                     <div> 이메일 : ${email}</div>
-                    <div>전화번호 : ${myphone}</div>
+                    <div>전화번호 : ${phone}</div>
                     <div>좋아하는 사이트 : ${prefer}</div>
                     <div style="color: red;">가입일 : ${getToday()}</div>
                 </div>

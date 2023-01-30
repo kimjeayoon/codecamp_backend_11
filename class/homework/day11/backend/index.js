@@ -1,6 +1,6 @@
 import express from 'express';
 import { checkPhone, getToken,  sendTokenToSMS } from './phone.js';
-import { userName,  userEmail, userPrefer,userPassword, welcomeUser, sendTemplateToEmail } from './welcomeSignup.js';
+import { userName,  userEmail, userPrefer,userPassword, welcomeUser, sendTemplateToEmail , Prefers} from './welcomeSignup.js';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { options } from './swagger/config.js';
@@ -10,8 +10,6 @@ import { Token } from './models/token.model.js';
 import { User } from "./models/user.model.js";
 
 import * as dotenv from 'dotenv';
-// import axios from 'axios'
-// import cheerio from 'cheerio'myfolder
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -23,56 +21,39 @@ app.get('/users', async function (req, res) {
 
     res.send(result)
   })
-  
-  // app.get('tokens/phone', async function (req, res) { 
-  //   const token = await Token.find()
-
-  //   res.send(token)
-  // }) 
 
   app.post('/tokens/phone', async function (req, res) {
     const { phone } = req.body;
-    console.log("123",req.body)
     // 1. 휴대폰번호 자릿수 확인(10~11자리)
-    const isValid = checkPhone(phone);
-    if (isValid === false) return;
+    const isPhone = checkPhone(phone);
+    if (isPhone === false) return;
 
     // 2. 핸드폰 토큰 6자리 만들기
      const myToken = getToken();
-     console.log("123",myToken)
     // 3. 핸드폰 번호에 토큰 전송하기
     sendTokenToSMS(phone, myToken);
-    
-  //   const phoneNum = await Certify.findOne({ phone });
+  
+    const phoneNB = await Token.findOne({ phone });
+    if(phoneNB === undefined) {
+        const token =  new Token({
+        token: myToken,
+        phone: req.body.phone,
+        isAuth: false
+      }) 
 
-  // if (phoneNum === null) {
-  //   new Certify({ phone: phone, token: token, isAuth: false }).save();
-  // } else {
-  //   //번호가 이미 있다면 token만 최신화해서 하나만 수정하기
-  //   await Certify.updateOne({ phone: phone }, { token: token });
-  // }
-  console.log("인증 완료")
-  // 4.토큰을 입력 제대로했는지 확인하기
-  // const isToken = sendToken(token);
-  // if (isToken === false) return;
-  const token =  new Token({
-    token: myToken,
-    phone: req.body.phone,
-    isAuth: false
-  })
+      await token.save()
+    } else {
+      await Token.updateOne({ phone}, {token: myToken})
+    }
+  
 
-  console.log("인증 완료")
-  await token.save()
-
-
-  //res.send(`${myphone}으로 인증 문자가 전송되었습니다.`);
+  res.send(`${ phone }으로 인증 문자가 전송되었습니다.`);
 });
 
 app.patch("/tokens/phone", async function (req, res) {
   
   let { phone , token } = req.body;
  const receiveToken = await Token.findOne({ token });
- console.log(receiveToken)
   if (receiveToken === null) {
     res.send("false");
     return;
@@ -90,7 +71,8 @@ app.patch("/tokens/phone", async function (req, res) {
 });
 
 app.post('/users', async function (req, res) {
-  const { name, personal, prefer, email, pwd, phone } = req.body;
+  const { name, email,  personal, prefer, phone, pwd} = req.body;
+  const og = await Prefers(prefer)
   // 1. 이름을 입력했는지 확인 
   
   const isName = userName(name);
@@ -104,21 +86,26 @@ app.post('/users', async function (req, res) {
   // 5. 비밀번호를 입력했는지 확인
   const isPassword = userPassword(pwd);
   if (isPassword === false) return;
-  // 6. DB에 저장된 users결과를 브라우저에 응답(response) 주기
+  // 6. 휴대폰 번호를 인증했는지 확인
+  const phoneNB = await Token.findOne({ phone });
+    if (!phoneNB || phoneNB.isAuth === false) {
+      return res.status(422).send("휴대폰 번호인증이 필요합니다!!!");
+   }
+
+  // 7. DB에 저장된 users결과를 브라우저에 응답(response) 주기
   const user =  new User({
     name: req.body.name,
     email: req.body.email,
-    phone: req.body.phone,
     personal: req.body.personal,
     prefer: req.body.prefer,
-    pwd: req.body.pwd
-  })
-
-  await user.save()
-  // 6. 가입환영 템플릿 만들기
-  const mytemplate = welcomeUser({  name, personal, prefer, email, myphone ,pwd });
+    phone: req.body.phone,
+    pwd: req.body.pwd,
+    og: { title: og.title, description: og.description, image: og.image }
+  }).save();
+  // 8. 가입환영 템플릿 만들기
+  const mytemplate = welcomeUser({  name, personal, prefer, email, phone });
   
-  // 7. 이메일에 가입환영 템플릿 전송하기
+  // 9. 이메일에 가입환영 템플릿 전송하기
    sendTemplateToEmail({ mytemplate, email });
 
   res.send('가입완료!');
