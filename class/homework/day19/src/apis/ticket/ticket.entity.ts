@@ -1,3 +1,5 @@
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Min } from 'class-validator';
 import {
   Column,
   Entity,
@@ -7,41 +9,46 @@ import {
 } from 'typeorm';
 import { TicketAirline } from '../ticketAirline/ticketAriline.entity';
 import { TicketAirport } from '../ticketAirport/ticketAirport.entity';
-
 @Entity()
+@ObjectType()
 export class Ticket {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Field(() => Date)
   arriving_time: Date;
 
-  @Column()
+  @Field(() => Date)
   departing_time: Date;
 
-  @Column()
+  @Field(() => String)
   arriving_gate: string;
 
-  @Column()
+  @Field(() => String)
   departing_gate: string;
 
-  @Column()
-  ticket_nnum: number;
+  @Field(() => Number)
+  ticket_num: number;
 
-  @Column()
+  @Field(() => String)
   ticket_image: string;
 
-  @Column()
+  @Field(() => Date)
   created_at: Date;
 
-  @Column()
+  @Field(() => String)
   travel_class: string;
 
-  @Column()
+  @Field(() => Number)
   limit_count: number;
 
-  @Column()
+  @Min(0)
+  @Field(() => Int)
   price: number;
+
+  @Column({ default: false })
+  @Field(() => Boolean)
+  isSoldout: boolean;
 
   @JoinColumn()
   @OneToOne(() => TicketAirline)
