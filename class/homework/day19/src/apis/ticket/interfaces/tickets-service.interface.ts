@@ -1,20 +1,20 @@
 import { CreateTicketInput } from '../dto/create-ticket.input';
 import { UpdateTicketInput } from '../dto/update-ticket.input';
-import { Ticket } from '../ticket.entity';
+import { Ticket } from '../entities/ticket.entity';
 
-export interface IProductsServiceCreate {
+export interface ITicketsServiceCreate {
   createTicketInput: CreateTicketInput;
 }
 
-export interface IProductsServiceFindOne {
+export interface ITicketsServiceFindOne {
   ticketId: string;
 }
 
-export interface IProductsServiceCheckSoldout {
+export interface ITicketsServiceCheckSoldout {
   ticket: Ticket;
 }
 
-export interface IProductsServiceUpdate {
+export interface ITicketsServiceUpdate {
   ticketId: string;
   updateTicketInput: UpdateTicketInput;
 }

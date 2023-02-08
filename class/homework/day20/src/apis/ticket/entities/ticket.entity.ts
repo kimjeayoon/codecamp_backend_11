@@ -1,64 +1,73 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Min } from 'class-validator';
+import { timestamp } from 'rxjs';
 import {
   Column,
+  CreateDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { TicketAirline } from '../ticketAirline/ticketAriline.entity';
-import { TicketAirport } from '../ticketAirport/ticketAirport.entity';
+import { TicketAirline } from '../../ticketAirline/entities/ticketAriline.entity';
+import { TicketAirport } from '../../ticketAirport/entities/ticketAirport.entity';
 @Entity()
 @ObjectType()
 export class Ticket {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @Field(() => String)
+  ticket_id: string;
 
+  @Column({ type: 'timestamp' })
   @Field(() => Date)
   arriving_time: Date;
 
+  @Column({ type: 'timestamp' })
   @Field(() => Date)
   departing_time: Date;
 
+  @Column()
   @Field(() => String)
   arriving_gate: string;
 
+  @Column()
   @Field(() => String)
   departing_gate: string;
 
-  @Field(() => Number)
+  @Column()
+  @Field(() => Int)
   ticket_num: number;
 
+  @Column()
   @Field(() => String)
   ticket_image: string;
 
+  @CreateDateColumn()
   @Field(() => Date)
   created_at: Date;
 
+  @Column()
   @Field(() => String)
   travel_class: string;
 
-  @Field(() => Number)
+  @Column()
+  @Field(() => Int)
   limit_count: number;
 
   @Min(0)
   @Field(() => Int)
+  @Column()
   price: number;
 
   @Column({ default: false })
   @Field(() => Boolean)
   isSoldout: boolean;
 
-  @JoinColumn()
-  @OneToOne(() => TicketAirline)
+  @ManyToOne(() => TicketAirline)
   ticketAirline: TicketAirline;
 
-  @JoinColumn()
-  @OneToOne(() => TicketAirport)
+  @ManyToOne(() => TicketAirport)
   departing_airport: TicketAirport;
 
-  @JoinColumn()
-  @OneToOne(() => TicketAirport)
+  @ManyToOne(() => TicketAirport)
   arriving_airport: TicketAirport;
 }

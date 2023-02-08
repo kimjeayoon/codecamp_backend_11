@@ -1,12 +1,12 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { Ticket } from './ticket.entity';
+import { Ticket } from './entities/ticket.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
-  IProductsServiceCheckSoldout,
-  IProductsServiceCreate,
-  IProductsServiceFindOne,
-  IProductsServiceUpdate,
+  ITicketsServiceCheckSoldout,
+  ITicketsServiceCreate,
+  ITicketsServiceFindOne,
+  ITicketsServiceUpdate,
 } from './interfaces/tickets-service.interface';
 
 @Injectable({})
@@ -20,11 +20,11 @@ export class TicketsService {
     return this.ticketRepository.find();
   }
 
-  findOne({ ticketId }: IProductsServiceFindOne): Promise<Ticket> {
-    return this.ticketRepository.findOne({ where: { id: ticketId } });
+  findOne({ ticketId }: ITicketsServiceFindOne): Promise<Ticket> {
+    return this.ticketRepository.findOne({ where: { ticket_id: ticketId } });
   }
 
-  create({ createTicketInput }: IProductsServiceCreate): Promise<Ticket> {
+  create({ createTicketInput }: ITicketsServiceCreate): Promise<Ticket> {
     const result = this.ticketRepository.save({
       ...createTicketInput,
     });
@@ -35,7 +35,7 @@ export class TicketsService {
   async update({
     ticketId,
     updateTicketInput,
-  }: IProductsServiceUpdate): Promise<Ticket> {
+  }: ITicketsServiceUpdate): Promise<Ticket> {
     this.findOne({ ticketId });
 
     const ticket = await this.findOne({ ticketId });
@@ -49,7 +49,7 @@ export class TicketsService {
     return result;
   }
 
-  checkSoldout({ ticket }: IProductsServiceCheckSoldout): void {
+  checkSoldout({ ticket }: ITicketsServiceCheckSoldout): void {
     if (ticket.isSoldout) {
       throw new UnprocessableEntityException('이미 판매 완료된 티켓입니다.');
     }

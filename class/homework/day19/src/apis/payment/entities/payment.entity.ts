@@ -1,14 +1,14 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Ticket } from '../ticket/ticket.entity';
-import { User } from '../users/entities/user.entity';
+import { Ticket } from '../../ticket/entities/ticket.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 @ObjectType()
 export class Payment {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
-  id: string;
+  payment_id: string;
 
   @Column()
   @Field(() => Number)

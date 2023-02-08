@@ -1,7 +1,7 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
-import { CreateTicketInput } from './dto/create-ticket.input';
-import { Ticket } from './ticket.entity';
+import { Ticket } from './entities/ticket.entity';
 import { TicketsService } from './ticket.service';
+import { CreateTicketInput } from './dto/create-ticket.input';
 import { UpdateTicketInput } from './dto/update-ticket.input';
 
 @Resolver()

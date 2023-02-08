@@ -35,7 +35,7 @@ export class ProductsService {
   findOne({ productId }: IProductsServiceFindOne): Promise<Product> {
     return this.productsRepository.findOne({
       where: { id: productId },
-      relations: ['productSaleslocation'],
+      relations: ['productSaleslocation', 'productCategory'],
     });
   }
 

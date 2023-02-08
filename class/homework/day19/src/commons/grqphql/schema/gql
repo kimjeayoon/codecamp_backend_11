@@ -3,15 +3,16 @@
 # ------------------------------------------------------
 
 type Ticket {
+  ticket_id: String!
   arriving_time: DateTime!
   departing_time: DateTime!
   arriving_gate: String!
   departing_gate: String!
-  ticket_num: Float!
+  ticket_num: Int!
   ticket_image: String!
   created_at: DateTime!
   travel_class: String!
-  limit_count: Float!
+  limit_count: Int!
   price: Int!
   isSoldout: Boolean!
 }
@@ -36,11 +37,11 @@ input CreateTicketInput {
   departing_time: DateTime!
   arriving_gate: String!
   departing_gate: String!
-  ticket_num: Float!
+  ticket_num: Int!
   ticket_image: String!
   created_at: DateTime!
   travel_class: String!
-  limit_count: Float!
+  limit_count: Int!
   price: Int!
 }
 
@@ -49,10 +50,10 @@ input UpdateTicketInput {
   departing_time: DateTime
   arriving_gate: String
   departing_gate: String
-  ticket_num: Float
+  ticket_num: Int
   ticket_image: String
   created_at: DateTime
   travel_class: String
-  limit_count: Float
+  limit_count: Int
   price: Int
 }

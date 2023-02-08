@@ -10,6 +10,7 @@ import { Product } from './entites/product.entity';
 import {
   IProductsServiceCheckSoldout,
   IProductsServiceCreate,
+  IProductsServiceDelete,
   IProductsServiceFindOne,
   IProductsServiceUpdate,
 } from './interfaces/products-service.interface';
@@ -102,6 +103,4 @@ export class ProductsService {
   }
 }
 
-interface IProductsServiceDelete {
-  productId: string;
-}
+

@@ -1,19 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Payment } from '../payment/payment.entity';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
-export class Passenger {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
-  id: string;
+  user_id: string;
 
   @Column()
   @Field(() => String)
@@ -21,29 +14,35 @@ export class Passenger {
 
   @Column()
   @Field(() => String)
-  en_first_name: string;
+  en_name: string;
 
   @Column()
   @Field(() => String)
   en_last_name: string;
 
   @Column()
-  @Field(() => String)
-  birth_date: string;
+  personal: string;
 
   @Column()
   @Field(() => String)
   email: string;
 
   @Column()
-  @Field(() => Number)
-  mobile: number;
+  @Field(() => String)
+  phone: string;
+
+  @Column()
+  pwd: string;
 
   @Column()
   @Field(() => String)
   gender: string;
 
-  @JoinColumn()
-  @OneToOne(() => Payment)
-  payments: Payment;
+  @Column()
+  @Field(() => Date)
+  created_at: Date;
+
+  @Column()
+  @Field(() => Date)
+  updated_at: Date;
 }
