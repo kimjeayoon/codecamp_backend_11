@@ -4,6 +4,7 @@ import { timestamp } from 'rxjs';
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -70,4 +71,7 @@ export class Ticket {
 
   @ManyToOne(() => TicketAirport)
   arriving_airport: TicketAirport;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

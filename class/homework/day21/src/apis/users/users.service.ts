@@ -39,7 +39,7 @@ export class UsersService {
     const user = await this.findOneByPersonal({
       personal: createUserInput.personal,
     });
-    if (user) throw new ConflictException('이미 등록된 가입한 회원입니다.'); // 주민번호가 같은 사람이 있다면 출력
+    if (user) throw new ConflictException('이미 가입한 회원입니다.'); // 주민번호가 같은 사람이 있다면 출력
     const HashedPwd = await this.PushHasedPwd({ pwd: createUserInput.pwd });
     const result = this.usersRepository.save({
       ...createUserInput,
